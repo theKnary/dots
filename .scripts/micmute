@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# makes mic mute/unmute and send notification of new status - useful for dwm
+amixer -q sset Mic toggle && notify-send -t 250 $(amixer get Mic | egrep -m1 -o '\[o.+\]' | sed 's/\[off\]/mic: mute/' | sed 's/\[on\]/mic: unmute/')

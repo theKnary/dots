@@ -1,0 +1,70 @@
+#!/bin/bash
+# simple satus bar for dwm
+# TODO: rewrite in c :) -- this is ugly
+
+# get local ip
+lan_ip() {
+	echo $(ip route get 1 | awk '{print $(NF-2);exit}')
+}
+# get battery info
+bat() {
+	# if charging print '~' , print bat percentage
+	echo $(echo 'bat: ' && acpi -b | grep -o 'Charging' | sed 's/Charging/~/' && echo $(acpi -b | grep -o '[0-9]*%'))
+}
+# get master volume
+vol() {
+	echo -n 'vol: '
+	# if vol mute, display mute, else display volume
+	if [ $(amixer get Master | egrep -o '\[o.+\]') == "[off]" ]; then
+		echo -n '--'
+	else
+		echo -n $(awk -F"[][]" '/dB/ { print $2 }' <(amixer get Master))
+	fi
+}
+# get mic status
+mic() {
+	echo -n 'mic: '
+	if [ $(amixer get Mic | egrep -m1 -o '\[o.+\]') == "[off]" ]; then
+		echo -n '--'
+	else
+		echo -n '++'
+	fi
+}
+# get brightness
+bri() {
+	echo $(echo -n 'bri: '$(xbacklight -get) && echo '%')
+}
+# get current date and time
+date_time() {
+	echo $(date "+- %b %d | %H:%M -")
+}
+# get weather temp from wttr.in and print only the current temp
+wttr() {
+	# high and low
+	#echo $(curl -s -N wttr.in/?Toronto | grep -m 1 -Eo -e '[-+]?[0-9].*°C')
+	# current temp
+	echo $(echo 'wx: ' && curl -s -N wttr.in/Toronto?format=1 | grep -Eoe '[-+]?[0-9].*°C')
+}
+# print available root storage
+root_avail() {
+	echo $(echo '/: ' && df -h --output=avail /dev/sda5 | grep -o '[0-9]*G')
+}
+# print available home storage
+home_avail() {
+	echo $(echo -n '~: ' && df -h --output=avail /dev/sda6 | grep -o '[0-9]*G')
+}
+# print memory usage
+mem_use() {
+	echo $(echo 'ram: ' && free -m | awk 'NR==2{printf "%.1fG", $3/1024 }')
+}
+cpu_temp() {
+	echo $(echo 'cpu: ' && sed 's/000$/°C/' /sys/class/thermal/thermal_zone0/temp)
+}
+# loop that refreshes info
+while true
+do
+	# set xwindow root name (dwm displays the root name at top right)
+	xsetroot -name "                $(bri)     $(vol)     $(mic)     $(root_avail)     $(home_avail)          $(date_time)          $(cpu_temp)     $(mem_use)     $(lan_ip)     $(wttr)     $(bat)"
+	# wait 10 seconds between loops
+	sleep 10
+done

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# install with make
+sudo make clean install

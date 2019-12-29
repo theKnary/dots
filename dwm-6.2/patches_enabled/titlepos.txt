@@ -1,0 +1,4 @@
+TODO: Create titlepos patch
+
+I modified dwm.c to take a decimal value from config.h (titlepos), to change the
+position of the title in the bar.

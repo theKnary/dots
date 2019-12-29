@@ -1,0 +1,4 @@
+#!/bin/bash
+
+# makes volume mute/unmute and send notification of new volume - useful for dwm
+amixer -q sset Master toggle && notify-send -t 250 $(amixer get Master | egrep -o '\[o.+\]' | sed 's/\[off\]/vol: mute/' | sed 's/\[on\]/vol: unmute/')

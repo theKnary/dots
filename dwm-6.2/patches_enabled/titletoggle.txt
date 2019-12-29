@@ -1,0 +1,4 @@
+TODO: make patch
+
+I added the ability to toggle the title in the bar; simple edit to dwm.c and
+config.h

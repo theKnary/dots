@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# take a screenshot (just to simplify command, i'm lazy)
+
+# sleep a second for dmenu to go away
+sleep 1 & import -window root ss.jpg

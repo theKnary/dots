@@ -1,0 +1,2 @@
+I added the ability to toggle gaps on or off. This one changes how a few other
+patches work as well.

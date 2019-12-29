@@ -1,0 +1,2 @@
+Replaces colors with themes. Themes can be added to themes.h and requires the
+ThemeDefault to be populated.

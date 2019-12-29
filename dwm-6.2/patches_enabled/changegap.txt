@@ -1,0 +1,6 @@
+changes made to dwm.c and key bindings added to config.h
+
+gap size can be increased and decreased on the fly. max gap size is 140 px.
+
+also:
+togglegap remembers new inc/dec gap value when toggling back and forth.

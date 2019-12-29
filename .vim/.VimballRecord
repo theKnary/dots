@@ -1,0 +1,1 @@
+Colorizer.vmb: call delete('/home/knary/.vim/plugin/ColorizerPlugin.vim')|call delete('/home/knary/.vim/doc/Colorizer.txt')|call delete('/home/knary/.vim/autoload/Colorizer.vim')

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# this generates a list of installed packages (without dependencies), including
+# custom packages installed
+
+# only official pkgs
+comm -23 <(pacman -Qtq) <(pacman -Qsq base base-devel) > ~/docs/machineInfo/official_pkgs.txt
+# remove AUR
+sed -i '/spotify/d' ~/docs/machineInfo/official_pkgs.txt
+
+# all
+# pacman installed (including AUR)
+printf "# list of installed packages (official + AUR):\n" > ~/docs/machineInfo/installed_pkgs.txt
+comm -23 <(pacman -Qtq) <(pacman -Qsq base base-devel) >> ~/docs/machineInfo/installed_pkgs.txt
+# manually installed
+printf "\n# manually installed/3rd party:\n" >> ~/docs/machineInfo/installed_pkgs.txt
+ls /opt >> ~/docs/machineInfo/installed_pkgs.txt && ls /usr/local/bin >> ~/docs/machineInfo/installed_pkgs.txt

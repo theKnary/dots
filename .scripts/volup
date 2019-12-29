@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# makes volume go up and send notification of new volume - useful for dwm
+
+# toggle if mute
+if [ $(amixer get Master | egrep -o '\[o.+\]') == '[off]' ]; then amixer -q sset Master toggle; fi
+# increase volume and notify
+amixer -q sset Master 5+ && notify-send -t 250 $(echo -n 'vol: ' && awk -F"[][]" '/dB/ { print $2 }' <(amixer sget Master))

@@ -1,0 +1,4 @@
+TODO: make remove gap on single window patch
+
+I modified the tilegap patch in dwm.c so that there are no gaps if there is only
+one window in the tile layout.

@@ -1,0 +1,5 @@
+#!/bin/bash
+# open surf in tabbed
+
+# quit on last tab close, embed surf
+tabbed -c surf -e & disown

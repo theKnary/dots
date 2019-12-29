@@ -1,0 +1,8 @@
+#! /bin/bash
+
+# This script opens firefox to my most used messaging sites
+
+firefox-developer-edition --new-window messenger.com & disown
+firefox-developer-edition --new-window messages.android.com & disown
+firefox-developer-edition --new-window gmail.com & disown
+firefox-developer-edition --new-window keep.google.com & disown

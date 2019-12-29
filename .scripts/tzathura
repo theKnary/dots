@@ -1,0 +1,5 @@
+#!/bin/bash
+# open zathura in tabbed
+
+# quit on last tab close, embed zathura
+tabbed -c zathura "$@" -e & disown

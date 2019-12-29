@@ -1,0 +1,28 @@
+#! /bin/bash
+
+# Copy current dots into git repo
+
+# Copy dots
+cp ~/.bash_profile ~/dev/dots
+cp ~/.bashrc ~/dev/dots
+cp ~/.bash_git ~/dev/dots
+cp ~/.xinitrc ~/dev/dots
+cp ~/.vimrc ~/dev/dots
+cp -r ~/.vim ~/dev/dots
+
+# configs
+cp -r ~/.config/compton ~/dev/dots/.config
+cp -r ~/.config/fontconfig ~/dev/dots/.config
+cp -r ~/.config/htop ~/dev/dots/.config
+cp -r ~/.config/mc ~/dev/dots/.config
+cp -r ~/.config/neofetch ~/dev/dots/.config
+cp -r ~/.config/redshift ~/dev/dots/.config
+cp ~/.config/mimeapps.list ~/dev/dots/.config
+cp ~/.config/user-dirs.dirs ~/dev/dots/.config
+
+# scripts
+cp -r ~/.scripts ~/dev/dots
+
+# Copy suckless builds
+cp -r ~/.cstmpkgs/suckless/dwm-6.2 ~/dev/dots
+cp -r ~/.cstmpkgs/suckless/st-0.8.2 ~/dev/dots

@@ -1,0 +1,16 @@
+#!/bin/bash
+
+
+# if no arg, ask for wallpaper
+if [[ $# -eq 0 ]] ; then
+	echo 'Options:'
+	echo ''
+	ls /home/knary/pics/wallpapers/
+	echo ''
+	echo 'Which wallpaper would you like to change to?'
+	read wallpaper
+	feh --bg-scale /home/knary/pics/wallpapers/$wallpaper
+# set arg 1 as wallpaper with feh
+else
+	feh --bg-scale $1
+fi

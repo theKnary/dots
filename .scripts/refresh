@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# this just kills the process that you pass it and starts it again
+# usefule to reload any configuration changes
+
+# killall process, wait a sec, start process, return, don't take errors
+killall $1 && sleep 1 && $1 & disown

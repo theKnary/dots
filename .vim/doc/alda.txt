@@ -1,0 +1,238 @@
+*alda.txt*	A Vim plugin for editing and playing Alda scores.
+
+                            ________________________________
+                           /    o   oooo ooo oooo   o o o  /\
+                          /    oo  ooo  oo  oooo   o o o  / /
+                         /    _________________________  / /
+                        / // / // /// // /// // /// / / / /
+                       /___ //////////////////////////_/ /
+                       \____\________________________\_\/
+
+                                    - alda -
+
+INTRODUCTION			               		*ft-alda* *alda*
+
+Alda is a music programming language designed for musicians who don't
+necessarily know how to program, as well as programmers who don't necessarily
+know how to music.
+
+For more information on Alda itself:
+
+	http://github.com/alda-lang/alda
+
+This plugin provides a nice environment for Vim users to work on Alda scores.
+
+================================================================================
+CONTENTS					*ft-alda-contents* *alda-contents*
+
+  1. Options .................................. |alda-options|
+  2. Indentation .............................. |alda-indent|
+  3. Syntax Highlighting ...................... |alda-syntax|
+  4. Navigation ............................... |alda-sections|
+  5. Folding .................................. |alda-folding|
+  6. Parsing .................................. |alda-parse|
+  7. Playing .................................. |alda-play|
+  8. History .................................. |alda-history|
+  9. About .................................... |alda-about|
+
+================================================================================
+OPTIONS						*ft-alda-options* *alda-options*
+
+g:alda_command					*g:alda_command* *alda_command*
+
+	The path to the `alda` executable.
+	default value: alda
+
+g:alda_port					*g:alda_port* *alda_port*
+
+	The port to use to talk to the Alda server.
+	default value: 27713
+
+================================================================================
+INDENTATION					*ft-alda-indent* *alda-indent*
+
+(not yet implemented)
+
+================================================================================
+SYNTAX HIGHLIGHTING				*ft-alda-syntax* *alda-syntax*
+
+Syntax highlighting is provided.
+
+================================================================================
+NAVIGATION					*ft-alda-sections* *alda-sections*
+					    *ft-alda-navigation* *alda-navigation*
+
+Special behavior for Vim |object-motions| is provided.
+
+|[[| and |]]| navigate to the previous/next top-level thing, which could be an
+instrument part, Clojure expression, variable definition, or comment block.
+
+(A "top-level thing" here is any block of text starting with a non-whitespace
+character, either at the top of the file or following an empty line.)
+
+|[]| and |][| navigate between instrument parts, specifically. For this to
+work properly, you must follow the convention of starting each instrument part
+at the beginning of a line (no leading whitespace), and break the line after
+the colon, e.g.:
+>
+	piano:
+	  c d e f g
+
+	clarinet:
+	  e f g a b
+
+================================================================================
+FOLDING						*ft-alda-folding* *alda-folding*
+
+Alda instrument parts, voices, etc. are foldable using the standard Vim
+|fold-commands|. This relies on indentation, so it is recommended that you
+follow the convention of indenting "blocks" of Alda code such as instrument
+parts and voices, e.g.:
+
+>
+	piano:
+	  V1:
+	    c8 d e f g a b > c
+
+	  V2:
+	    e8 f g a b > c d e
+
+	violin:
+	  c4. e8~4 g4
+
+================================================================================
+PARSING        					*ft-alda-parse* *alda-parse*
+
+There are commands available to parse Alda code and show the parsed
+representation of the score.
+
+The parse results will be displayed in a vertical split with Clojure syntax
+highlighting. `q` is mapped in this buffer as a convenient way to close it.
+
+Note: This command relies on `alda` being installed and included in your
+`$PATH`. If |g:alda_command| is set to an explicit path (e.g.
+`/Users/dave/Downloads/alda`), it will use that executable instead.
+
+Parse results are emitted in JSON format. As a bonus, if you have `jq`
+installed and available on your `$PATH`, the JSON will be pretty-printed.
+(jq: https://stedolan.github.io/jq)
+
+Parsing the entire buffer as score data~
+
+`:AldaParseBuffer` displays the JSON representation of the score that is
+generated when the contents of the buffer are parsed. This is mapped to
+<localleader>s.
+
+Parsing the entire buffer as events~
+
+`:AldaParseBufferEvents` parses the contents of the buffer and emits a JSON
+array of objects representing score events. This is mapped to <localleader>E.
+
+Parsing a selection as events~
+
+There is a "parse events" operator that is mapped to <localleader>e in normal
+and visual mode.
+
+This operator can be used to parse small selections or blocks of Alda code and
+see how the parser interprets the code excerpts as score events.
+
+In visual mode, simply highlight the code you want to parse, then enter
+<localleader>e.
+
+In normal mode, you can use <localleader>e just like any other Vim operator.
+For example...
+
+<localleader>e$         parse from the cursor to the end of the line
+<localleader>eaw	parse the word around the cursor
+<localleader>ea)	parse the parenthesized expression around the cursor
+<localleader>ee		parse the current line
+
+================================================================================
+PLAYING        					*ft-alda-play* *alda-play*
+
+Playing Alda code relies on `alda` being installed and included in your
+`$PATH`.  If |g:alda_command| is set to an explicit path (e.g.
+`/Users/dave/Downloads/alda`), it will use that executable instead.
+
+Playing a selection~
+
+There is a play operator that is mapped to <localleader>p in normal and visual
+mode.
+
+This operator is useful for playing small selections or blocks of Alda code.
+
+In visual mode, simply highlight the code you want to play, then enter
+<localleader>p.
+
+In normal mode, you can use <localleader>p just like any other Vim operator.
+For example...
+
+<localleader>p$         play from the cursor to the end of the line
+<localleader>paw	play the word around the cursor
+<localleader>pa)	play the parenthesized expression around the cursor
+<localleader>pp		play the current line
+
+As each selection is played, if it was successful (i.e. valid syntax), the
+selection is added to the history.
+
+For more information about history, see |alda-history|.
+
+Playing the entire buffer~
+
+`:AldaPlayBuffer` will play the contents of the current buffer.
+
+This is mapped to <localleader>P.
+
+Running this command clears the history. (See |alda-history|.)
+
+Stopping playback~
+
+`:AldaStopPlayback` will stop all sound from the Alda server.
+
+This is mapped to <localleader>S.
+
+================================================================================
+HISTORY						*ft-alda-history* *alda-history*
+
+For each .alda file you open in vim, vim-alda stores the selections of code
+that you play in a "history file." This makes it possible to keep track of the
+current instrument(s), tempo, etc. when playing consecutive selections.
+
+For example, if you play the following selection:
+>
+	bassoon: (tempo 100) o2
+<
+You will hear nothing (because there are no notes), but that text is added to
+the history.
+
+Then, if you play the following selection:
+>
+	c8 d e- f g2
+<
+You will hear the notes being played on bassoon, at 100 bpm, in the second
+octave.
+
+There are some commands and mappings available for interacting with the
+history file of the current buffer:
+
+`:AldaHistory`		<localleader>hh
+Shows the contents of the history file.
+
+`:AldaEditHistory`	<localleader>he
+Opens the history file in a buffer for editing.
+
+`:AldaClearHistory`	<localleader>hc
+Clears the contents of the history file.
+
+================================================================================
+ABOUT						*ft-alda-about* *alda-about*
+
+Please feel free to file any issues or contribute patches via GitHub:
+
+	http://github.com/daveyarwood/vim-alda
+
+This plugin is distributed under the Vim license. See |license|.
+
+Copyright © 2017 Dave Yarwood <dave.yarwood@gmail.com>
+
+vim:tw=78:noet:sw=8:sts=8:ts=8:ft=help:norl:

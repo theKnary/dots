@@ -1,0 +1,2 @@
+I added a variable to toggle whether to center the window if it is the only one
+OR to remove all gaps in the same case. This is for the tile layout.
